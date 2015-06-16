@@ -55,7 +55,7 @@
          <scope>provided</scope>
       </dependency>
 
-      <!-- Import the JAX-RS API, we use provided scope as the API is included 
+      <!-- Import the JAX-RS API, we use provided scope as the API is included
          in JBoss AS 7 -->
       <dependency>
          <groupId>org.jboss.spec.javax.ws.rs</groupId>
@@ -73,11 +73,22 @@
 
       <!-- Import the JPA API, we use provided scope as the API is included 
          in JBoss AS 7 -->
-      <dependency>
-         <groupId>org.hibernate.javax.persistence</groupId>
-         <artifactId>hibernate-jpa-2.0-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
+       <dependency>
+           <groupId>org.hibernate.javax.persistence</groupId>
+           <artifactId>hibernate-jpa-2.1-api</artifactId>
+           <version>1.0.0.Final</version>
+       </dependency>
+
+       <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-core</artifactId>
+           <version>4.3.6.Final</version>
+       </dependency>
+       <dependency>
+           <groupId>org.postgresql</groupId>
+           <artifactId>postgresql</artifactId>
+           <version>9.2-1003-jdbc4</version>
+       </dependency>
 
    </dependencies>
 

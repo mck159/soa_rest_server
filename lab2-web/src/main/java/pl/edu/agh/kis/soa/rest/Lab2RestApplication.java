@@ -7,6 +7,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import pl.edu.agh.kis.soa.resources.StudentResource;
+import pl.edu.agh.kis.soa.resources.service.StudentService;
 
 
 /**

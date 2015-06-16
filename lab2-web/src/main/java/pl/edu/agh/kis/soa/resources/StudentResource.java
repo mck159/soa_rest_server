@@ -1,16 +1,15 @@
 package pl.edu.agh.kis.soa.resources;
 
-import java.util.ArrayList;
+import pl.edu.agh.kis.soa.resources.model.Student;
+import pl.edu.agh.kis.soa.resources.service.StudentService;
+
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import pl.edu.agh.kis.soa.resources.model.Student;
 
 /**
  * Klasa wystawiająca interfejs REST.
@@ -22,6 +21,7 @@ import pl.edu.agh.kis.soa.resources.model.Student;
 public class StudentResource {
 
     private static final Logger logger = Logger.getLogger("StudentResource");
+    private static final StudentService studentService = new StudentService();
 
     public StudentResource() {
     }
@@ -45,6 +45,7 @@ public class StudentResource {
     @Path("student")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createStudent(Student student) {
+        studentService.persist(student);
         String result = String.format("Location: student/%s", student.getAlbumNo());
         return Response.status(Response.Status.CREATED).entity(result).build();
     }
