@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 /**
@@ -73,12 +77,30 @@ public class StudentResource {
 
     @DELETE
     @Path("student/{id}")
-    public Response deleteStudent(@PathParam("id") int id) {
+    public Response deleteStudent(@PathParam("id") int id, @Context HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if(session == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String authAttr = (String) session.getAttribute("auth");
+        if(authAttr == null || !authAttr.equals("true")) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
         try {
             studentService.delete(id);
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.status(Response.Status.OK).build();
+    }
+
+    @POST
+    @Path("auth")
+    public Response auth(@HeaderParam("Auth") String auth, @Context HttpServletRequest request) {
+        if(auth != null && auth.equals("haslo")) {
+            request.getSession().setAttribute("auth", "true");
+            return Response.status(Response.Status.OK).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 }
