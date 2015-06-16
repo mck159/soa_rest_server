@@ -5,6 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
 public class Student {
@@ -58,9 +61,11 @@ public class Student {
 	public void setAlbumNo(String albumNo) {
 		this.albumNo = albumNo;
 	}
+
 	public void setSubjects(List<String> subjects) {
 		this.subjects = subjects;
 	}
+
 	public List<String> getSubjects() {
 		return subjects;
 	}

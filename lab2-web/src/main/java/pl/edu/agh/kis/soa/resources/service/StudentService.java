@@ -1,8 +1,10 @@
 package pl.edu.agh.kis.soa.resources.service;
 
+import org.hibernate.Hibernate;
 import pl.edu.agh.kis.soa.resources.model.Student;
 import pl.edu.agh.kis.soa.resources.dao.StudentDao;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -15,10 +17,12 @@ public class StudentService {
         StudentDao = new StudentDao();
     }
 
-    public void persist(Student entity) {
+    public int persist(Student entity) {
         StudentDao.openCurrentSessionwithTransaction();
         StudentDao.persist(entity);
+        int id = entity.getId();
         StudentDao.closeCurrentSessionwithTransaction();
+        return id;
     }
 
     public void update(Student entity) {
@@ -29,24 +33,28 @@ public class StudentService {
 
     public Student findById(int id) {
         StudentDao.openCurrentSession();
-        Student Student = StudentDao.findById(id);
+        Student student = StudentDao.findById(id);
+        Hibernate.initialize(student.getSubjects());
         StudentDao.closeCurrentSession();
-        return Student;
+        return student;
 
     }
 
     public void delete(int id) {
         StudentDao.openCurrentSessionwithTransaction();
-        Student Student = StudentDao.findById(id);
-        StudentDao.delete(Student);
+        Student student = StudentDao.findById(id);
+        StudentDao.delete(student);
         StudentDao.closeCurrentSessionwithTransaction();
     }
 
     public List<Student> findAll() {
         StudentDao.openCurrentSession();
-        List<Student> Students = StudentDao.findAll();
+        List<Student> students = StudentDao.findAll();
+        for(Student student : students) {
+            Hibernate.initialize(student.getSubjects());
+        }
         StudentDao.closeCurrentSession();
-        return Students;
+        return students;
     }
 
     public void deleteAll() {
